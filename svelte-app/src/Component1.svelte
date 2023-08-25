@@ -1,7 +1,9 @@
 <script>
 //import 
 import Icon from '@iconify/svelte';
-  import { each } from 'svelte/internal';
+import { each } from 'svelte/internal';
+import  {onMount,beforeUpdate,afterUpdate} from  'svelte'
+
 
 // varaibiles
 let activeComponent ;
@@ -42,14 +44,13 @@ const saveContact = function (){
       return
   
     }
-    const nameIsUsed = contacts.some((item)=>item.fullname===fullname)  
+    const nameIsUsed = contacts?.some((item)=>item.fullname===fullname)  
       if(nameIsUsed){
         validationNameError='you already have a contact saved with this name'
         return
       }   
     contacts=[...contacts,{fullname,dateofbirth,email,phonenumber,address}]
     fullname=email=address=phonenumber=dateofbirth=''
-    console.log(contacts)
     activeComponent=""
 }
 
@@ -68,10 +69,25 @@ const showComponent3 = function(data){
 }
 
 const deleteContact = function(data){
+    console.log('deleted')
     const newData = contacts.filter((contact)=>contact!==data)
     contacts=newData
-    activeComponent=''
+    selectedContact ={}
+    console.log(activeComponent)
 }
+
+onMount(()=>{
+    const data = localStorage.getItem('contacts')
+    const contactsData=JSON.parse(data)
+    console.log(contactsData)
+    contacts=contactsData?contactsData:[]
+})
+
+afterUpdate(()=>{
+    localStorage.setItem('contacts',JSON.stringify(contacts))
+})
+
+
 
 
 </script>
@@ -85,15 +101,15 @@ const deleteContact = function(data){
     <p class="tm">TM</p>
    </div> 
 
-   <div on:click={showAddContactModal}>
-   <Icon icon="typcn:plus" color="white"  width="30" height="30" style="font-weight:bold; cursor:pointer;   "/>
+   <div on:click={showAddContactModal} on:keydown>
+   add<Icon icon="typcn:plus" color="white"   width="30" height="30" style="font-weight:bold; cursor:pointer;   "/>
    </div>
 
    </div>  
    
    <div>
     {#each contacts as contact,index (contact)}
-    <div on:click={()=>showComponent3(contact)} key={index} style="color: aliceblue; cursor:pointer">{contact.fullname}</div>
+    <div on:click={()=>showComponent3(contact)} on:keydown key={index} style="color: aliceblue; cursor:pointer">{contact.fullname}</div>
     {/each}
    </div>
 
@@ -132,11 +148,11 @@ const deleteContact = function(data){
  class="edit-buttons-container"
  >
  <button on:click={showEditContactModal} style="all: unset; margin-right:20px">
- <Icon icon="noto:fountain-pen" color="white"  width="30" height="30" style="font-weight:bold; margin-right:20px; cursor:pointer;   "/>
+ edit<Icon icon="noto:fountain-pen" color="white"  width="30" height="30" style="font-weight:bold; margin-right:20px; cursor:pointer;   "/>
  <button>
 
  <button style="all: unset;" on:click={()=>deleteContact(selectedContact)}>
- <Icon icon="emojione-v1:scissors"   width="30" height="30" style=" cursor:pointer;   "/>
+ delete<Icon icon="emojione-v1:scissors"   width="30" height="30" style=" cursor:pointer;   "/>
  </button> 
 
 </div>
