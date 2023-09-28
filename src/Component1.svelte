@@ -101,7 +101,7 @@ afterUpdate(()=>{
     <p class="tm">TM</p>
    </div> 
 
-   <div on:click={showAddContactModal} on:keydown>
+   <div on:click={showAddContactModal} on:keydown  role="button" tabindex="0">
    <Icon icon="typcn:plus" color="white"   width="30" height="30" style="font-weight:bold; cursor:pointer;   "/>
    </div>
 
@@ -109,7 +109,7 @@ afterUpdate(()=>{
    
    <div>
     {#each contacts as contact,index (contact)}
-    <div on:click={()=>showComponent3(contact)} on:keydown key={index} style="color: aliceblue; cursor:pointer">{contact.fullname}</div>
+    <div on:click={()=>showComponent3(contact)} on:keydown key={index} role="button" tabindex="0" style="color: aliceblue; cursor:pointer">{contact.fullname}</div>
     {/each}
    </div>
 
