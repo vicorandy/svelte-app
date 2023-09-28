@@ -102,7 +102,7 @@ afterUpdate(()=>{
    </div> 
 
    <div on:click={showAddContactModal} on:keydown>
-   add<Icon icon="typcn:plus" color="white"   width="30" height="30" style="font-weight:bold; cursor:pointer;   "/>
+   <Icon icon="typcn:plus" color="white"   width="30" height="30" style="font-weight:bold; cursor:pointer;   "/>
    </div>
 
    </div>  
